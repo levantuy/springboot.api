@@ -6,105 +6,87 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-
 @Entity
-@Table(name = "adm_users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {
-            "username"
-        }),
-        @UniqueConstraint(columnNames = {
-            "email"
-        })
-})
+@Table(name = "ADM_USERS")
+@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 public class User extends DateAudit {
-    @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "user_Sequence")
-   	@SequenceGenerator(name = "user_Sequence", sequenceName = "USER_SEQ")
-    private Long id;
+	private static final long serialVersionUID = 1L;
+	private long id;	
+	private String email;
+	private String name;
+	private String password;
+	private String username;
+	private Set<Role> roles = new HashSet<>();
 
-    @NotBlank
-    @Size(max = 40)
-    private String name;
+	public User() {
 
-    @NotBlank
-    @Size(max = 15)
-    private String username;
+	}
 
-    @NaturalId
-    @NotBlank
-    @Size(max = 40)
-    @Email
-    private String email;
+	public User(String name, String username, String email, String password) {
+		this.name = name;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+	}
 
-    @NotBlank
-    @Size(max = 100)
-    private String password;
+	@Id
+	@SequenceGenerator(name = "ADM_USERS_ID_GENERATOR", sequenceName = "USER_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ADM_USERS_ID_GENERATOR")
+	public long getId() {
+		return this.id;
+	}
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public User() {
+	public String getEmail() {
+		return this.email;
+	}
 
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public User(String name, String username, String email, String password) {
-        this.name = name;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
+	public String getName() {
+		return this.name;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public String getPassword() {
+		return this.password;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public String getUsername() {
+		return this.username;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Set<Role> getRoles() {
+	// bi-directional many-to-many association to Role
+	@ManyToMany
+	@JoinTable(name = "ADM_USER_ROLES", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
+			@JoinColumn(name = "ROLE_ID") })
+	public Set<Role> getRoles() {
         return roles;
     }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
+    }	
 }
