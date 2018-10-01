@@ -1,6 +1,8 @@
 package vnpt.api.model;
 
 import vnpt.api.model.audit.DateAudit;
+import vnpt.api.util.AppCallFunctions;
+
 import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -29,6 +31,7 @@ public class User extends DateAudit {
 	}
 
 	public User(String name, String username, String email, String password) {
+		this.id = AppCallFunctions.getNextId("ADM_USERS");
 		this.name = name;
 		this.username = username;
 		this.email = email;
