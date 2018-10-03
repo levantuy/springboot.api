@@ -39,8 +39,6 @@ public class User extends DateAudit {
 	}
 
 	@Id
-	@SequenceGenerator(name = "ADM_USERS_ID_GENERATOR", sequenceName = "USER_SEQ")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ADM_USERS_ID_GENERATOR")
 	public long getId() {
 		return this.id;
 	}

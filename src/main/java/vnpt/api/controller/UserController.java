@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import vnpt.api.payload.UserSummary;
 import vnpt.api.security.CurrentUser;
 import vnpt.api.security.UserPrincipal;
-
+import vnpt.api.services.UserService;
+import vnpt.api.util.AppConstants;
 import vnpt.api.exception.ResourceNotFoundException;
 import vnpt.api.model.User;
 import vnpt.api.payload.UserProfile;
+import vnpt.api.payload.UserResponse;
+import vnpt.api.payload.MenuInfo;
+import vnpt.api.payload.PagedResponse;
 import vnpt.api.payload.UserIdentityAvailability;
 import vnpt.api.repository.UserRepository;
 
@@ -25,6 +29,8 @@ import vnpt.api.repository.UserRepository;
 public class UserController {
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private UserService userService;
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -60,5 +66,13 @@ public class UserController {
 				pollCount, voteCount);
 
 		return userProfile;
+	}
+	
+	@GetMapping("/user")
+	@PreAuthorize("hasRole('TEST')")
+	public PagedResponse<UserResponse> getAll(@CurrentUser UserPrincipal currentUser,
+            @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size){		
+		return userService.getAll(currentUser, page, size);
 	}
 }
