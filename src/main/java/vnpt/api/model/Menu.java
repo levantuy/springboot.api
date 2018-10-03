@@ -20,6 +20,11 @@ public class Menu implements Serializable {
 	private long position;
 	@Column(name="PARENT_ID")
 	private long parentId;
+	@OneToOne(mappedBy = "menu", cascade = CascadeType.ALL, 
+            fetch = FetchType.LAZY, optional = false)
+    private Feature feature;
+	
+	public Menu() {}
 	
 	@Id
 	public long getId() {
@@ -68,5 +73,13 @@ public class Menu implements Serializable {
 	
 	public void setParentId(long parentId) {
 		this.parentId = parentId;
+	}
+	
+	public Feature getFeature() {
+		return this.feature;
+	}
+	
+	public void setFeature(Feature feature) {
+		this.feature = feature;
 	}
 }

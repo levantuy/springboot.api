@@ -42,6 +42,7 @@ public class MenuService {
 				info.setName(menu.getName());
 				info.setParentId(menu.getParentId());
 				info.setPosition(menu.getPosition());
+				info.setUrl(menu.getFeature().getUrl());
 				menusParent.add(info);
 			}			
 		}
@@ -58,6 +59,7 @@ public class MenuService {
 					info.setName(menu.getName());
 					info.setParentId(menu.getParentId());
 					info.setPosition(menu.getPosition());
+					info.setUrl(menu.getFeature().getUrl());
 					parent.addChild(info);					
 				}		
 			}				

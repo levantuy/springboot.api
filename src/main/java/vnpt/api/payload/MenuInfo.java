@@ -10,7 +10,10 @@ public class MenuInfo {
 	private String icon;	
 	private long position;	
 	private long parentId;
-	private List<MenuInfo> children = new ArrayList<MenuInfo>(); 
+	private List<MenuInfo> children = new ArrayList<MenuInfo>();
+	private List<BadgeInfo> badge = new ArrayList<BadgeInfo>();
+	private List<WrapperInfo> wrapper = new ArrayList<WrapperInfo>();
+	private String url;
 	
 	public long getId() {
 		return this.id;
@@ -74,5 +77,45 @@ public class MenuInfo {
 
     public void removeChild(MenuInfo menuInfo) {
     	children.remove(menuInfo);
+    }    
+	
+	public List<BadgeInfo> getbadge() {
+        return badge;
     }
+
+    public void setChildrenBadge(List<BadgeInfo> badge) {
+        this.badge = badge;
+    }	
+    
+    public void addChildBadge(BadgeInfo badge) {
+        this.badge.add(badge);        
+    }
+
+    public void removeChildBadge(BadgeInfo badge) {
+    	this.badge.remove(badge);
+    }
+    
+    public List<WrapperInfo> getwrapper() {
+        return this.wrapper;
+    }
+
+    public void setChildrenWrapper(List<WrapperInfo> wrapper) {
+        this.wrapper = wrapper;
+    }	
+    
+    public void addChildWrapper(WrapperInfo wrapper) {
+        this.wrapper.add(wrapper);        
+    }
+
+    public void removeChildWrapper(WrapperInfo badge) {
+    	this.wrapper.remove(wrapper);
+    }
+    
+    public String getUrl() {
+		return this.url;
+	}
+	
+	public void setUrl(String url) {
+		this.url = url;
+	}
 }
