@@ -9,8 +9,7 @@ import vnpt.api.payload.*;
 
 public class ModelMapper {
 	public static MenuInfo mapMenuToMenuInfo(Menu menu) {
-		MenuInfo result = new MenuInfo();
-		result.setFeatureId(menu.getFeatureId());
+		MenuInfo result = new MenuInfo();		
 		result.setIcon(menu.getIcon());
 		result.setId(menu.getId());
 		result.setName(menu.getName());;

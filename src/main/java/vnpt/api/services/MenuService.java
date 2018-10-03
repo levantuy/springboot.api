@@ -35,8 +35,7 @@ public class MenuService {
 		for (final Menu menu : menusFirst) {
 			if(menu.getParentId() == 0)
 			{
-				MenuInfo info = new MenuInfo();
-				info.setFeatureId(menu.getFeatureId());
+				MenuInfo info = new MenuInfo();				
 				info.setIcon(menu.getIcon());
 				info.setId(menu.getId());
 				info.setName(menu.getName());
@@ -52,8 +51,7 @@ public class MenuService {
 			{
 				if(menu.getParentId() == parent.getId())
 				{
-					MenuInfo info = new MenuInfo();
-					info.setFeatureId(menu.getFeatureId());
+					MenuInfo info = new MenuInfo();					
 					info.setIcon(menu.getIcon());
 					info.setId(menu.getId());
 					info.setName(menu.getName());

@@ -1,60 +1,66 @@
 package vnpt.api.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
-import javax.persistence.*;
-
 @Entity
-@Table(name = "ADM_FEATURES")
-@NamedQuery(name = "Feature.findAll", query = "SELECT u FROM Feature u")
-public class Feature implements Serializable {
-	private static final long serialVersionUID = 1L;
-	@Column(name="ID")
+@Table(name = "adm_features")
+public class Feature implements Serializable {	
+	@Id
 	private long id;
-	@Column(name="NAME")
+	@Column(name = "NAME")
 	private String name;
-	@Column(name="URL")
+	@Column(name = "URL")
 	private String url;
-	@Column(name="FEATURE_GROUP_ID")
+	@Column(name = "FEATURE_GROUP_ID")
 	private long featureGroupId;
-	@OneToOne(mappedBy = "menu", cascade = CascadeType.ALL, 
-            fetch = FetchType.LAZY, optional = false)
+	@OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL, mappedBy = "feature")
 	private Menu menu;
-	
+
 	public Feature() {
-		
+
 	}
 	
-	@Id
 	public long getId() {
 		return this.id;
 	}
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getUrl() {
 		return this.url;
 	}
-	
+
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
-	public long getfeatureGroupId() {
+
+	public long getFeatureGroupId() {
 		return this.featureGroupId;
 	}
-	
-	public void setfeatureGroupId(long featureGroupId) {
+
+	public void setFeatureGroupId(long featureGroupId) {
 		this.featureGroupId = featureGroupId;
+	}
+
+	public Menu getMenu() {
+		return this.menu;
+	}
+
+	public void setMenu(Menu menu) {
+		this.menu = menu;
 	}
 }

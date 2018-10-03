@@ -5,8 +5,7 @@ import java.util.List;
 
 public class MenuInfo {
 	private long id;		
-	private String name;	
-	private long featureId;	
+	private String name;		
 	private String icon;	
 	private long position;	
 	private long parentId;
@@ -29,14 +28,6 @@ public class MenuInfo {
 	
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public long getFeatureId() {
-		return this.featureId;
-	}
-	
-	public void setFeatureId(long featureId) {
-		this.featureId = featureId;
 	}
 	
 	public String getIcon() {
