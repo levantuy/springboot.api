@@ -1,5 +1,6 @@
 package vnpt.api.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -27,17 +28,42 @@ public class MenuService {
 
 	private static final Logger logger = LoggerFactory.getLogger(MenuService.class);
 
-	public PagedResponse<MenuInfo> getAll(UserPrincipal currentUser, int page, int size) {
-		validatePageNumberAndSize(page, size);
-		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "name");
-		Page<Menu> menusFirst = menuRepository.findAll(pageable);
-		
-		List<MenuInfo> menus = menusFirst.map(menu -> {
-			return ModelMapper.mapMenuToMenuInfo(menu);
-		}).getContent();
+	public List<MenuInfo> getAll(UserPrincipal currentUser) {
+		List<Menu> menusFirst = menuRepository.findAll();
 
-		return new PagedResponse<>(menus, menusFirst.getNumber(),
-				menusFirst.getSize(), menusFirst.getTotalElements(), menusFirst.getTotalPages(), menusFirst.isLast());
+		List<MenuInfo> menusParent = new ArrayList<MenuInfo>();
+		for (final Menu menu : menusFirst) {
+			if(menu.getParentId() == 0)
+			{
+				MenuInfo info = new MenuInfo();
+				info.setFeatureId(menu.getFeatureId());
+				info.setIcon(menu.getIcon());
+				info.setId(menu.getId());
+				info.setName(menu.getName());
+				info.setParentId(menu.getParentId());
+				info.setPosition(menu.getPosition());
+				menusParent.add(info);
+			}			
+		}
+		
+		for (final Menu menu : menusFirst) {
+			for(final MenuInfo parent: menusParent)
+			{
+				if(menu.getParentId() == parent.getId())
+				{
+					MenuInfo info = new MenuInfo();
+					info.setFeatureId(menu.getFeatureId());
+					info.setIcon(menu.getIcon());
+					info.setId(menu.getId());
+					info.setName(menu.getName());
+					info.setParentId(menu.getParentId());
+					info.setPosition(menu.getPosition());
+					parent.addChild(info);					
+				}		
+			}				
+		}
+		
+		return menusParent;
 	}
 
 	private void validatePageNumberAndSize(int page, int size) {

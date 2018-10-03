@@ -1,5 +1,7 @@
 package vnpt.api.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +24,7 @@ public class MenuController {
 	
 	@GetMapping()
 	@PreAuthorize("hasRole('TEST')")
-	public PagedResponse<MenuInfo> getAll(@CurrentUser UserPrincipal currentUser,
-            @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-            @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size){		
-		return menuService.getAll(currentUser, page, size);
+	public List<MenuInfo> getAll(@CurrentUser UserPrincipal currentUser){		
+		return menuService.getAll(currentUser);
 	}
 }

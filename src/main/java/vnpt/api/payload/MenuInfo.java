@@ -1,5 +1,8 @@
 package vnpt.api.payload;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MenuInfo {
 	private long id;		
 	private String name;	
@@ -7,6 +10,7 @@ public class MenuInfo {
 	private String icon;	
 	private long position;	
 	private long parentId;
+	private List<MenuInfo> children = new ArrayList<MenuInfo>(); 
 	
 	public long getId() {
 		return this.id;
@@ -55,4 +59,20 @@ public class MenuInfo {
 	public void setParentId(long parentId) {
 		this.parentId = parentId;
 	}
+	
+	public List<MenuInfo> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<MenuInfo> children) {
+        this.children = children;
+    }	
+    
+    public void addChild(MenuInfo menuInfo) {
+        children.add(menuInfo);        
+    }
+
+    public void removeChild(MenuInfo menuInfo) {
+    	children.remove(menuInfo);
+    }
 }
