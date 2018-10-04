@@ -4,6 +4,14 @@ public class BadgeInfo {
 	private String variant;
 	private String text;
 	
+	public BadgeInfo() {}
+	
+	public BadgeInfo(String variant, String text)
+	{
+		this.variant = variant;
+		this.text = text;
+	}
+	
 	public void setVariant(String variant){
 		this.variant = variant;
 	}

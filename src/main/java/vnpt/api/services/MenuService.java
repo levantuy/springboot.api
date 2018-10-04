@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import vnpt.api.exception.BadRequestException;
 import vnpt.api.model.Menu;
+import vnpt.api.payload.BadgeInfo;
+import vnpt.api.payload.MenuChild;
 import vnpt.api.payload.MenuInfo;
 import vnpt.api.payload.PagedResponse;
 import vnpt.api.repository.MenuRepository;
@@ -28,8 +30,12 @@ public class MenuService {
 
 	private static final Logger logger = LoggerFactory.getLogger(MenuService.class);
 
+	private Sort sortByPositionAsc() {
+        return new Sort(Sort.Direction.ASC, "position");
+    }
+	
 	public List<MenuInfo> getAll(UserPrincipal currentUser) {
-		List<Menu> menusFirst = menuRepository.findAll();
+		List<Menu> menusFirst = menuRepository.findAll(sortByPositionAsc());
 
 		List<MenuInfo> menusParent = new ArrayList<MenuInfo>();
 		for (final Menu menu : menusFirst) {
@@ -42,7 +48,8 @@ public class MenuService {
 				info.setParentId(menu.getParentId());
 				info.setPosition(menu.getPosition());
 				info.setUrl(menu.getFeature().getUrl());
-				menusParent.add(info);
+				info.setChildrenBadge(new BadgeInfo("info", "NEW"));
+				menusParent.add(info);			
 			}			
 		}
 		
@@ -51,7 +58,7 @@ public class MenuService {
 			{
 				if(menu.getParentId() == parent.getId())
 				{
-					MenuInfo info = new MenuInfo();					
+					MenuChild info = new MenuChild();					
 					info.setIcon(menu.getIcon());
 					info.setId(menu.getId());
 					info.setName(menu.getName());
