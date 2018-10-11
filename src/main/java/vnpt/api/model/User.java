@@ -4,6 +4,8 @@ import vnpt.api.model.audit.DateAudit;
 import vnpt.api.util.AppCallFunctions;
 
 import org.hibernate.annotations.NaturalId;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

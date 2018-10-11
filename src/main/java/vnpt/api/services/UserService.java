@@ -1,6 +1,11 @@
 package vnpt.api.services;
 
 import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
+import javax.persistence.PersistenceContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import vnpt.api.exception.BadRequestException;
 import vnpt.api.model.User;
@@ -24,6 +30,8 @@ import vnpt.api.util.ModelMapper;
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
@@ -48,5 +56,16 @@ public class UserService {
 		if (size > AppConstants.MAX_PAGE_SIZE) {
 			throw new BadRequestException("Page size must not be greater than " + AppConstants.MAX_PAGE_SIZE);
 		}
+	}
+	
+	/* test delete by query */
+	@Transactional
+	public void deleteCustomId(long id) {
+	   int isSuccessful = entityManager.createQuery("delete from User u where u.id=:id")
+	            .setParameter("id", id)
+	            .executeUpdate();
+	    if (isSuccessful == 0) {
+	        throw new OptimisticLockException(" user modified concurrently");
+	    }
 	}
 }

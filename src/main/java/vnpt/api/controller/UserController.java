@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import vnpt.api.exception.ResourceNotFoundException;
 import vnpt.api.model.User;
 import vnpt.api.payload.UserProfile;
 import vnpt.api.payload.UserResponse;
+import vnpt.api.payload.ApiResponse;
 import vnpt.api.payload.MenuInfo;
 import vnpt.api.payload.PagedResponse;
 import vnpt.api.payload.UserIdentityAvailability;
@@ -68,11 +70,39 @@ public class UserController {
 		return userProfile;
 	}
 	
-	@GetMapping("/user")
+	@GetMapping("/users")
 	@PreAuthorize("hasRole('TEST')")
 	public PagedResponse<UserResponse> getAll(@CurrentUser UserPrincipal currentUser,
             @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
             @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size){		
 		return userService.getAll(currentUser, page, size);
+	}
+	
+	@GetMapping("/users/byid/{id}")
+	public UserProfile getUserProfileById(@PathVariable(value = "id") long id) {
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+
+		long pollCount = 1;
+		long voteCount = 1;
+
+		UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(), user.getName(), user.getCreatedAt(),
+				pollCount, voteCount);
+
+		return userProfile;
+	}
+	
+	@PreAuthorize("hasRole('DELETE')")
+	@DeleteMapping("/users/{id}")
+	public ApiResponse deleteUser(@PathVariable(value = "id") long id) {
+		userRepository.deleteById(id);
+		return new ApiResponse(true, "delete success");
+	}
+	
+	@PreAuthorize("hasRole('DELETE')")
+	@DeleteMapping("/users/deleteCustom/{id}")
+	public ApiResponse deleteCustom(@PathVariable(value = "id") long id) {
+		userService.deleteCustomId(id);
+		return new ApiResponse(true, "delete success");
 	}
 }
