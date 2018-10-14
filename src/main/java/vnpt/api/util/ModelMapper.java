@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import vnpt.api.model.Menu;
 import vnpt.api.model.User;
+import vnpt.api.model.UserDashboard;
 import vnpt.api.payload.*;
 
 public class ModelMapper {
@@ -36,5 +37,11 @@ public class ModelMapper {
 		result.setRoles(roleResponses);
 		result.setUsername(user.getUsername());
 		return result;
+	}
+	
+	public static UserDashboardResponse mapUserDashboardToUserDashboardResponse(UserDashboard item) {
+		UserDashboardResponse userDashboard = new UserDashboardResponse(item.getId(), item.getUserId(), item.getI(), item.getX(), 
+				item.getY(), item.getW(), item.getH());
+		return userDashboard;
 	}
 }
