@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import vnpt.api.util.AppCallFunctions;
+
 @Entity
 @Table(name = "ADM_USER_DASHBOARD")
 @NamedQuery(name = "UserDashboard.findAll", query = "SELECT u FROM UserDashboard u")
@@ -27,7 +29,7 @@ public class UserDashboard {
 	public UserDashboard() {}
 	
 	public UserDashboard(long id, long userId, int x, int y, int h, int w, String i) {
-		this.setId(id);
+		this.setId(AppCallFunctions.getNextId("ADM_USER_DASHBOARD"));
 		this.setUserId(userId);
 		this.setX(x);
 		this.setY(y);

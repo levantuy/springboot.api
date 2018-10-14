@@ -1,11 +1,9 @@
 package vnpt.api.controller;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import vnpt.api.model.UserDashboard;
 import vnpt.api.payload.ApiResponse;
@@ -28,6 +25,7 @@ import vnpt.api.util.ModelMapper;
 public class UserDashboardController {
 	@Autowired
 	UserDashboardReposity userDashboardReposity;
+	
 	
 	@GetMapping()
 	@PreAuthorize("hasRole('USER')")
@@ -49,6 +47,16 @@ public class UserDashboardController {
 			userDashboardReposity.save(dashboard);
 		}	
 		
-		return new ApiResponse(true, "User registered successfully");
+		return new ApiResponse(true, "Update successfully");
+	}	
+	
+	@PostMapping("add")
+	@PreAuthorize("hasRole('USER')")
+	public ApiResponse postDashboard(@CurrentUser UserPrincipal currentUser, @RequestBody UserDashboardResponse info) {
+		long userId = currentUser.getId();
+		UserDashboard dashboard = new UserDashboard(info.getId(), userId, info.getX(), info.getY(),
+				info.getH(), info.getW(), info.getI());
+		userDashboardReposity.save(dashboard);
+		return new ApiResponse(true, "Add successfully");
 	}
 }
