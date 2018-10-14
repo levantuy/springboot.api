@@ -52,7 +52,7 @@ public class UserDashboardController {
 	
 	@PostMapping("add")
 	@PreAuthorize("hasRole('USER')")
-	public ApiResponse postDashboard(@CurrentUser UserPrincipal currentUser, @RequestBody UserDashboardResponse info) {
+	public ApiResponse postOne(@CurrentUser UserPrincipal currentUser, @RequestBody UserDashboardResponse info) {
 		long userId = currentUser.getId();
 		UserDashboard dashboard = new UserDashboard(info.getId(), userId, info.getX(), info.getY(),
 				info.getH(), info.getW(), info.getI());
